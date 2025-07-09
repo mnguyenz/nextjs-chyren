@@ -1,0 +1,1 @@
+export const revalidateOptions = { next: { revalidate: 30 } };
