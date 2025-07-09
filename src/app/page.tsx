@@ -1,23 +1,24 @@
-import { type SanityDocument } from "next-sanity";
 import { client } from "@/sanity/client";
 import { POSTS_QUERY } from "@/sanity/queries/articles";
+import { Article } from "@/components/sections/Article";
+import { ArticleType } from "@/types/article";
 
 const options = { next: { revalidate: 30 } };
 
-export default async function IndexPage() {
-  const posts = await client.fetch<SanityDocument[]>(POSTS_QUERY, {}, options);
+const HomePage = async () => {
+  const posts = await client.fetch<ArticleType[]>(POSTS_QUERY, {}, options);
 
   return (
-    <main className="container mx-auto min-h-screen max-w-3xl p-8">
-      <h1 className="text-4xl font-bold mb-8">Posts</h1>
-      <ul className="flex flex-col gap-y-4">
-        {posts.map((post) => (
-          <li className="hover:underline" key={post._id}>
-            <h2 className="text-xl font-semibold">{post.title}</h2>
-            <p>{post.content}</p>
-          </li>
-        ))}
-      </ul>
+    <main className="px-4 sm:px-6 lg:px-8 py-12">
+      <section className="max-w-screen-xl mx-auto">
+        <Article articles={posts} />
+      </section>
     </main>
+  );
+}
+
+export default function Home() {
+  return (
+    <HomePage />
   );
 }
